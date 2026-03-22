@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cl.dao.ShangpinxinxiDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cl.entity.ShangpinxinxiEntity" id="shangpinxinxiMap">
+        <result property="shangpinbianhao" column="shangpinbianhao"/>
+        <result property="shangpinmingcheng" column="shangpinmingcheng"/>
+        <result property="shangpinfenlei" column="shangpinfenlei"/>
+        <result property="cangku" column="cangku"/>
+        <result property="guige" column="guige"/>
+        <result property="tupian" column="tupian"/>
+        <result property="jiage" column="jiage"/>
+        <result property="shuliang" column="shuliang"/>
+        <result property="shangpinxiangqing" column="shangpinxiangqing"/>
+    </resultMap>
+
+    <select id="selectListView"
+		resultType="com.cl.entity.view.ShangpinxinxiView" >
+
+		SELECT  shangpinxinxi.* FROM shangpinxinxi  shangpinxinxi 	        
+         <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.cl.entity.view.ShangpinxinxiView" >
+		SELECT * FROM shangpinxinxi  shangpinxinxi  <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+	</select>
+
+
+
+    <select id="selectValue" resultType="map" >
+        SELECT ${params.xColumn}, ROUND(sum(${params.yColumn}),1) total FROM shangpinxinxi
+         <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+        group by ${params.xColumn}
+        limit 100
+    </select>
+
+    <select id="selectTimeStatValue" resultType="map" >
+        <if test = 'params.timeStatType == "日"'>
+                SELECT DATE_FORMAT(${params.xColumn},'%Y-%m-%d') ${params.xColumn}, sum(${params.yColumn}) total FROM shangpinxinxi
+                 <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+                group by DATE_FORMAT(${params.xColumn},'%Y-%m-%d')
+        </if>
+        <if test = 'params.timeStatType == "月"'>
+                SELECT DATE_FORMAT(${params.xColumn},'%Y-%m') ${params.xColumn}, sum(${params.yColumn}) total FROM shangpinxinxi
+                 <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+                group by DATE_FORMAT(${params.xColumn},'%Y-%m')
+        </if>
+        <if test = 'params.timeStatType == "年"'>
+                SELECT DATE_FORMAT(${params.xColumn},'%Y') ${params.xColumn}, sum(${params.yColumn}) total FROM shangpinxinxi
+                 <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+                group by DATE_FORMAT(${params.xColumn},'%Y')
+        </if>
+    </select>
+
+    <select id="selectGroup" resultType="map" >
+        SELECT ${params.column} , count(1) total FROM shangpinxinxi
+         <choose>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and ew.sqlSegment.contains('WHERE')">
+            <!-- 当SQL片段包含WHERE时，直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != '' and !ew.sqlSegment.toUpperCase().startsWith(' ORDER')">
+            <!-- 当不包含WHERE且不以ORDER开头时，加WHERE -->
+            WHERE ${ew.sqlSegment}
+        </when>
+        <when test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+            <!-- 其他情况（以ORDER开头）直接使用 -->
+            ${ew.sqlSegment}
+        </when>
+    </choose>
+        group by ${params.column}
+        limit 10
+    </select>
+
+
+
+</mapper>
