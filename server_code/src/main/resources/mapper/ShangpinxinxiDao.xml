@@ -10,6 +10,7 @@
         <result property="shangpinfenlei" column="shangpinfenlei"/>
         <result property="cangku" column="cangku"/>
         <result property="guige" column="guige"/>
+        <result property="cunfanghuowei" column="cunfanghuowei"/>
         <result property="tupian" column="tupian"/>
         <result property="jiage" column="jiage"/>
         <result property="shuliang" column="shuliang"/>

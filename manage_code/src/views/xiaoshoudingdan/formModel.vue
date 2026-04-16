@@ -9,12 +9,12 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品名称" prop="shangpinmingcheng">
+						<el-form-item label="配件名称" prop="shangpinmingcheng">
 							<el-select
 								class="list_sel"
 								:disabled="!isAdd||disabledForm.shangpinmingcheng?true:false"
 								v-model="form.shangpinmingcheng"
-								placeholder="请选择商品名称"
+								placeholder="请选择配件名称"
 								@change="shangpinmingchengChange">
 								<el-option v-for="(item,index) in shangpinmingchengLists" :label="item" :value="item">
 								</el-option>
@@ -22,8 +22,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
-							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="商品分类"
+						<el-form-item label="配件分类" prop="shangpinfenlei">
+							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="配件分类"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinfenlei?true:false" />
 						</el-form-item>
 					</el-col>
@@ -50,8 +50,8 @@
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="商品总价" prop="shangpinzongjia">
-							<el-input class="list_inp" v-model="shangpinzongjia" :readonly="true" placeholder="商品总价" />
+						<el-form-item label="配件总价" prop="shangpinzongjia">
+							<el-input class="list_inp" v-model="shangpinzongjia" :readonly="true" placeholder="配件总价" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -260,7 +260,7 @@
 	const formRef = ref(null)
 	const id = ref(0)
 	const type = ref('')
-	//商品名称列表
+	//配件名称列表
 	const shangpinmingchengLists = ref([])
 	//客户名称列表
 	const kehumingchengLists = ref([])

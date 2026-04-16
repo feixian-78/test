@@ -5,10 +5,10 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							商品分类：
+							配件分类：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="商品分类"
+							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="配件分类"
 								clearable>
 							</el-input>
 						</div>
@@ -53,7 +53,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinfenlei"
-					label="商品分类">
+					label="配件分类">
 					<template #default="scope">
 						{{scope.row.shangpinfenlei}}
 					</template>
@@ -109,7 +109,7 @@
 	
 	//基础信息
 	const tableName = 'shangpinfenlei'
-	const formName = '商品分类'
+	const formName = '配件分类'
 	const route = useRoute()
 	//基础信息
 	onMounted(()=>{

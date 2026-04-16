@@ -9,15 +9,15 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品名称" prop="shangpinmingcheng">
-							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="商品名称"
+						<el-form-item label="配件名称" prop="shangpinmingcheng">
+							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="配件名称"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinmingcheng?true:false" />
 						</el-form-item>
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
-							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="商品分类"
+						<el-form-item label="配件分类" prop="shangpinfenlei">
+							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="配件分类"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinfenlei?true:false" />
 						</el-form-item>
 					</el-col>
@@ -26,6 +26,12 @@
 						<el-form-item label="规格" prop="guige">
 							<el-input class="list_inp" v-model="form.guige" placeholder="规格"
 								 type="text" 								:readonly="!isAdd||disabledForm.guige?true:false" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="存放货位" prop="cunfanghuowei">
+							<el-input class="list_inp" v-model="form.cunfanghuowei" placeholder="存放货位"
+								 type="text" 								:readonly="!isAdd||disabledForm.cunfanghuowei?true:false" />
 						</el-form-item>
 					</el-col>
 
@@ -125,6 +131,7 @@
 		shangpinmingcheng : false,
 		shangpinfenlei : false,
 		guige : false,
+		cunfanghuowei : false,
 		shuliang : false,
 		kehumingcheng : false,
 		shoujihaoma : false,
@@ -216,6 +223,8 @@
 		],
 		guige: [
 		],
+		cunfanghuowei: [
+		],
 		shuliang: [
 			{ validator: validateIntNumber, trigger: 'blur' },
 		],
@@ -253,6 +262,7 @@
 			shangpinmingcheng: '',
 			shangpinfenlei: '',
 			guige: '',
+			cunfanghuowei: '',
 			shuliang: '',
 			kehumingcheng: '',
 			shoujihaoma: '',
@@ -322,6 +332,11 @@
 				if(x=='guige'){
 					form.value.guige = row[x];
 					disabledForm.value.guige = true;
+					continue;
+				}
+				if(x=='cunfanghuowei'){
+					form.value.cunfanghuowei = row[x];
+					disabledForm.value.cunfanghuowei = true;
 					continue;
 				}
 				if(x=='shuliang'){

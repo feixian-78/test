@@ -9,7 +9,7 @@
 			</div>
 		</div>
 
-		<div class="projectTitle">企业进销存管理系统</div>
+		<div class="projectTitle">七彩虹电脑配件仓储系统</div>
 		<div class="top_right_view">
 			<el-dropdown class="avatar-container" trigger="hover">
 				<div class="avatar-wrapper">

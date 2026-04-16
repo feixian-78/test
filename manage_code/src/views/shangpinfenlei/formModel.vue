@@ -4,8 +4,8 @@
 			<el-form class="formModel_form" ref="formRef" :model="form" label-width="$template2.back.add.form.base.labelWidth" :rules="rules">
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
-							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="商品分类"
+						<el-form-item label="配件分类" prop="shangpinfenlei">
+							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="配件分类"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinfenlei?true:false" />
 						</el-form-item>
 					</el-col>
@@ -37,7 +37,7 @@
 	const emit = defineEmits(['formModelChange'])
 	//基础信息
 	const tableName = 'shangpinfenlei'
-	const formName = '商品分类'
+	const formName = '配件分类'
 	//基础信息
 	//form表单
 	const form = ref({})

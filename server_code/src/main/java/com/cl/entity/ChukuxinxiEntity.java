@@ -74,6 +74,8 @@ public class ChukuxinxiEntity<T> implements Serializable {
 	 */
 					
 	private String guige;
+
+	private String cunfanghuowei;
 	
 	/**
 	 * 数量
@@ -184,6 +186,12 @@ public class ChukuxinxiEntity<T> implements Serializable {
 	 */
 	public String getGuige() {
 		return guige;
+	}
+	public void setCunfanghuowei(String cunfanghuowei) {
+		this.cunfanghuowei = cunfanghuowei;
+	}
+	public String getCunfanghuowei() {
+		return cunfanghuowei;
 	}
 	/**
 	 * 设置：数量

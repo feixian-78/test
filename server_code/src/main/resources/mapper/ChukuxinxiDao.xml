@@ -9,6 +9,7 @@
         <result property="shangpinmingcheng" column="shangpinmingcheng"/>
         <result property="shangpinfenlei" column="shangpinfenlei"/>
         <result property="guige" column="guige"/>
+        <result property="cunfanghuowei" column="cunfanghuowei"/>
         <result property="shuliang" column="shuliang"/>
         <result property="kehumingcheng" column="kehumingcheng"/>
         <result property="shoujihaoma" column="shoujihaoma"/>

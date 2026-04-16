@@ -4,8 +4,8 @@
 			<el-form class="formModel_form" ref="formRef" :model="form" label-width="$template2.back.add.form.base.labelWidth" :rules="rules">
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label="采购账号" prop="caigouzhanghao">
-							<el-input class="list_inp" v-model="form.caigouzhanghao" placeholder="采购账号"
+						<el-form-item label="进货账号" prop="caigouzhanghao">
+							<el-input class="list_inp" v-model="form.caigouzhanghao" placeholder="进货账号"
 								type="text" :readonly="!isAdd||disabledForm.caigouzhanghao?true:false" />
 						</el-form-item>
 					</el-col>
@@ -16,8 +16,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="采购姓名" prop="caigouxingming">
-							<el-input class="list_inp" v-model="form.caigouxingming" placeholder="采购姓名"
+						<el-form-item label="进货姓名" prop="caigouxingming">
+							<el-input class="list_inp" v-model="form.caigouxingming" placeholder="进货姓名"
 								 type="text" 								:readonly="!isAdd||disabledForm.caigouxingming?true:false" />
 						</el-form-item>
 					</el-col>
@@ -87,7 +87,7 @@
 	const emit = defineEmits(['formModelChange'])
 	//基础信息
 	const tableName = 'caigourenyuan'
-	const formName = '采购人员'
+	const formName = '进货人员'
 	//基础信息
 	//form表单
 	const form = ref({})

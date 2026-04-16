@@ -5,10 +5,10 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							商品分类：
+							配件分类：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="商品分类"
+							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="配件分类"
 								clearable>
 							</el-input>
 						</div>
@@ -44,6 +44,9 @@
 					<el-button class="del_btn" type="danger" :disabled="selRows.length?false:true" @click="delClick(null)"  v-if="btnAuth('chukuxinxi','删除')">
 						删除
 					</el-button>
+					<el-button class="warning_btn" type="warning" @click="exportExcel">
+						导出 Excel
+					</el-button>
 				</div>
 			</div>
 			<br>
@@ -77,7 +80,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinmingcheng"
-					label="商品名称">
+					label="配件名称">
 					<template #default="scope">
 						{{scope.row.shangpinmingcheng}}
 					</template>
@@ -88,7 +91,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinfenlei"
-					label="商品分类">
+					label="配件分类">
 					<template #default="scope">
 						{{scope.row.shangpinfenlei}}
 					</template>
@@ -102,6 +105,17 @@
 					label="规格">
 					<template #default="scope">
 						{{scope.row.guige}}
+					</template>
+				</el-table-column>
+				<el-table-column
+					 :resizable='true' 
+					 :sortable='true' 
+					 align="left" 
+					 header-align="left"
+					 prop="cunfanghuowei"
+					label="存放货位">
+					<template #default="scope">
+						{{scope.row.cunfanghuowei}}
 					</template>
 				</el-table-column>
 				<el-table-column
@@ -227,6 +241,7 @@
 	import {
 		ElMessageBox
 	} from 'element-plus'
+	import { export_json_to_excel2 } from '@/utils/Export2Excel'
 	const context = getCurrentInstance()?.appContext.config.globalProperties;
 	import formModel from './formModel.vue'
 	
@@ -343,6 +358,36 @@
 	const searchClick = () => {
 		listQuery.value.page = 1
 		getList()
+	}
+	const exportExcel = () => {
+		let params = {
+			page: 1,
+			limit: 100000,
+			sort: 'id',
+			order: 'desc'
+		}
+		if(searchQuery.value.shangpinfenlei&&searchQuery.value.shangpinfenlei!=''){
+			params['shangpinfenlei'] = '%' + searchQuery.value.shangpinfenlei + '%'
+		}
+		if(searchQuery.value.shuliangstart){
+			params['shuliangstart'] = searchQuery.value.shuliangstart
+		}
+		if(searchQuery.value.shuliangend){
+			params['shuliangend'] = searchQuery.value.shuliangend
+		}
+		context?.$http({
+			url: `${tableName}/page`,
+			method: 'get',
+			params: params
+		}).then(res => {
+			const exportList = res.data.data.list || []
+			export_json_to_excel2(
+				['Order No','Product Name','Category','Spec','Location','Quantity','Customer','Phone','Outbound Date','Keeper Account','Keeper Name','Remark'],
+				exportList,
+				['dingdanbianhao','shangpinmingcheng','shangpinfenlei','guige','cunfanghuowei','shuliang','kehumingcheng','shoujihaoma','chukuriqi','cangguanyuanzhanghao','cangguanyuanxingming','beizhu'],
+				'chukuxinxi'
+			)
+		})
 	}
 	//表单
 	const formRef = ref(null)

@@ -76,6 +76,14 @@ public class ShangpinrukuEntity<T> implements Serializable {
 	private String guige;
 	
 	/**
+	 * 生产批次号
+	 */
+					
+	private String shengchanpicihao;
+
+	private String cunfanghuowei;
+	
+	/**
 	 * 数量
 	 */
 					
@@ -184,6 +192,24 @@ public class ShangpinrukuEntity<T> implements Serializable {
 	 */
 	public String getGuige() {
 		return guige;
+	}
+	/**
+	 * 设置：生产批次号
+	 */
+	public void setShengchanpicihao(String shengchanpicihao) {
+		this.shengchanpicihao = shengchanpicihao;
+	}
+	/**
+	 * 获取：生产批次号
+	 */
+	public String getShengchanpicihao() {
+		return shengchanpicihao;
+	}
+	public void setCunfanghuowei(String cunfanghuowei) {
+		this.cunfanghuowei = cunfanghuowei;
+	}
+	public String getCunfanghuowei() {
+		return cunfanghuowei;
 	}
 	/**
 	 * 设置：数量

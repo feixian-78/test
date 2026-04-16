@@ -32,7 +32,7 @@ export const routes = [{
 		component: () => import('../views/index'),
 		children: [{
 			path: '/',
-			name: '首页',
+			name: '首页 ',
 			component: () => import('../views/HomeView.vue'),
 			meta: {
 				affix: true
@@ -55,7 +55,7 @@ export const routes = [{
 		}
 		,{
 			path: '/caigourenyuanCenter',
-			name: '采购人员个人中心',
+			name: '进货人员个人中心',
 			component: caigourenyuanCenter
 		}
 		,{
@@ -75,12 +75,12 @@ export const routes = [{
 		}
 		,{
 			path: '/shangpinxinxi',
-			name: '商品信息',
+			name: '配件信息',
 			component: shangpinxinxi
 		}
 		,{
 			path: '/shangpinruku',
-			name: '商品入库',
+			name: '配件入库',
 			component: shangpinruku
 		}
 		,{
@@ -95,12 +95,12 @@ export const routes = [{
 		}
 		,{
 			path: '/caigourenyuan',
-			name: '采购人员',
+			name: '进货人员',
 			component: caigourenyuan
 		}
 		,{
 			path: '/caigoudingdan',
-			name: '采购订单',
+			name: '进货订单',
 			component: caigoudingdan
 		}
 		,{
@@ -110,7 +110,7 @@ export const routes = [{
 		}
 		,{
 			path: '/shangpinfenlei',
-			name: '商品分类',
+			name: '配件分类',
 			component: shangpinfenlei
 		}
 		,{
@@ -137,7 +137,7 @@ export const routes = [{
 	},
 	{
 		path: '/caigourenyuanRegister',
-		name: '采购人员注册',
+		name: '进货人员注册',
 		component: caigourenyuanRegister
 	},
 ]

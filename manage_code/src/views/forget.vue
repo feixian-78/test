@@ -2,7 +2,7 @@
 	<div>
 		<div class="forget_view">
 			<el-form :model="forgetForm" class="forget_box">
-				<div class="forget_title">企业进销存管理系统{{pageType==1?'找回密码':pageType==2?'输入密保':'重置密码'}}</div>
+				<div class="forget_title">七彩虹电脑配件仓储系统{{pageType==1?'找回密码':pageType==2?'输入密保':'重置密码'}}</div>
 				<div class="tab_line">
 					<div class="line"></div>
 					<div class="num_line">

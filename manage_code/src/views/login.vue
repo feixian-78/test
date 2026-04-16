@@ -2,7 +2,7 @@
 	<div>
 		<div class="login_view">
 			<el-form :model="loginForm" class="login_form">
-				<div class="title_view">企业进销存管理系统登录</div>
+				<div class="title_view">七彩虹电脑配件仓储系统登录</div>
 				<div class="list_item" v-if="loginType==1">
 					<div class="list_label">
 						账号：
@@ -27,7 +27,7 @@
 					<el-button class="login" v-if="loginType==1" type="success" @click="handleLogin">登录</el-button>
 					<el-button class="register" type="primary" @click="handleRegister('cangguanyuan')">注册仓管员</el-button>
 					<el-button class="register" type="primary" @click="handleRegister('xiaoshourenyuan')">注册销售人员</el-button>
-					<el-button class="register" type="primary" @click="handleRegister('caigourenyuan')">注册采购人员</el-button>
+					<el-button class="register" type="primary" @click="handleRegister('caigourenyuan')">注册进货人员</el-button>
 				</div>
 			</el-form>
 		</div>

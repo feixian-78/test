@@ -5,10 +5,10 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							商品分类：
+							配件分类：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="商品分类"
+							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="配件分类"
 								clearable>
 							</el-input>
 						</div>
@@ -95,7 +95,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinmingcheng"
-					label="商品名称">
+					label="配件名称">
 					<template #default="scope">
 						{{scope.row.shangpinmingcheng}}
 					</template>
@@ -106,7 +106,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinfenlei"
-					label="商品分类">
+					label="配件分类">
 					<template #default="scope">
 						{{scope.row.shangpinfenlei}}
 					</template>
@@ -150,7 +150,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinzongjia"
-					label="商品总价">
+					label="配件总价">
 					<template #default="scope">
 						{{scope.row.shangpinzongjia}}
 					</template>

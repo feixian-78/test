@@ -9,15 +9,15 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品名称" prop="shangpinmingcheng">
-							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="商品名称"
+						<el-form-item label="配件名称" prop="shangpinmingcheng">
+							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="配件名称"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinmingcheng?true:false" />
 						</el-form-item>
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
-							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="商品分类"
+						<el-form-item label="配件分类" prop="shangpinfenlei">
+							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="配件分类"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinfenlei?true:false" />
 						</el-form-item>
 					</el-col>
@@ -26,6 +26,18 @@
 						<el-form-item label="规格" prop="guige">
 							<el-input class="list_inp" v-model="form.guige" placeholder="规格"
 								 type="text" 								:readonly="!isAdd||disabledForm.guige?true:false" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="生产批次号" prop="shengchanpicihao">
+							<el-input class="list_inp" v-model="form.shengchanpicihao" placeholder="生产批次号"
+								 type="text" 								:readonly="!isAdd||disabledForm.shengchanpicihao?true:false" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="存放货位" prop="cunfanghuowei">
+							<el-input class="list_inp" v-model="form.cunfanghuowei" placeholder="存放货位"
+								 type="text" 								:readonly="!isAdd||disabledForm.cunfanghuowei?true:false" />
 						</el-form-item>
 					</el-col>
 
@@ -116,7 +128,7 @@
 	const emit = defineEmits(['formModelChange'])
 	//基础信息
 	const tableName = 'shangpinruku'
-	const formName = '商品入库'
+	const formName = '配件入库'
 	//基础信息
 	//form表单
 	const form = ref({})
@@ -125,6 +137,8 @@
 		shangpinmingcheng : false,
 		shangpinfenlei : false,
 		guige : false,
+		shengchanpicihao : false,
+		cunfanghuowei : false,
 		shuliang : false,
 		gongyingshangmingcheng : false,
 		shoujihaoma : false,
@@ -216,6 +230,10 @@
 		],
 		guige: [
 		],
+		shengchanpicihao: [
+		],
+		cunfanghuowei: [
+		],
 		shuliang: [
 			{ validator: validateIntNumber, trigger: 'blur' },
 		],
@@ -253,6 +271,8 @@
 			shangpinmingcheng: '',
 			shangpinfenlei: '',
 			guige: '',
+			shengchanpicihao: '',
+			cunfanghuowei: '',
 			shuliang: '',
 			gongyingshangmingcheng: '',
 			shoujihaoma: '',
@@ -322,6 +342,16 @@
 				if(x=='guige'){
 					form.value.guige = row[x];
 					disabledForm.value.guige = true;
+					continue;
+				}
+				if(x=='shengchanpicihao'){
+					form.value.shengchanpicihao = row[x];
+					disabledForm.value.shengchanpicihao = true;
+					continue;
+				}
+				if(x=='cunfanghuowei'){
+					form.value.cunfanghuowei = row[x];
+					disabledForm.value.cunfanghuowei = false;
 					continue;
 				}
 				if(x=='shuliang'){
@@ -432,6 +462,7 @@
 		var objcross = JSON.parse(JSON.stringify(crossRow.value))
 		if(!!objcross) {
 			objcross.shuliang = parseFloat(objcross.shuliang) + parseFloat(form.value.shuliang)
+			objcross.cunfanghuowei = form.value.cunfanghuowei
 		}
 		let crossUserId = ''
 		let crossRefId = ''

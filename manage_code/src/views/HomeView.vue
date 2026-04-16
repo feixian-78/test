@@ -4,14 +4,14 @@
     <div class="count_list">
       <el-card v-if="btnAuth('shangpinxinxi','首页总数')" class="count_card">
         <div class="count_item">
-          <div class="count_title">商品信息总数</div>
+          <div class="count_title">配件信息总数</div>
           <div class="count_num">{{shangpinxinxiCount}}</div>
         </div>
       </el-card>
 
       <el-card v-if="btnAuth('caigoudingdan','首页总数')" class="count_card">
         <div class="count_item">
-          <div class="count_title">采购订单总数</div>
+          <div class="count_title">进货订单总数</div>
           <div class="count_num">{{caigoudingdanCount}}</div>
         </div>
       </el-card>
@@ -29,7 +29,7 @@
           <template #header>
             <div class="index_card_head">
               <div class="card_head_title">
-                商品信息
+                配件信息
               </div>
               <div class="card_head_right">
                 <el-icon @click="cardTypeClick('hiddenshangpinxinxiChartType1')" class="showIcons"
@@ -54,7 +54,7 @@
           <template #header>
             <div class="index_card_head">
               <div class="card_head_title">
-                采购订单
+                进货订单
               </div>
               <div class="card_head_right">
                 <el-icon @click="cardTypeClick('hiddencaigoudingdanChartType1')" class="showIcons"
@@ -263,7 +263,7 @@ const getcaigoudingdanChart1 = () => {
       var option = {};
       option = {
         title: {
-          text: '采购量统计',
+          text: '进货量统计',
           left: 'center'
         },
         tooltip: {

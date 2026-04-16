@@ -5,23 +5,23 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							商品分类：
+							配件分类：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="商品分类"
+							<el-input class="search_inp" v-model="searchQuery.shangpinfenlei" placeholder="配件分类"
 								clearable>
 							</el-input>
 						</div>
 					</div>
 					<div class="search_view">
 						<div class="search_label">
-							采购数量：
+							进货数量：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.caigoushuliangstart" placeholder="最小采购数量"
+							<el-input class="search_inp" v-model="searchQuery.caigoushuliangstart" placeholder="最小进货数量"
 								clearable>
 							</el-input>至
-							<el-input class="search_inp" v-model="searchQuery.caigoushuliangend" placeholder="最大采购数量"
+							<el-input class="search_inp" v-model="searchQuery.caigoushuliangend" placeholder="最大进货数量"
 								clearable>
 							</el-input>
 						</div>
@@ -59,8 +59,8 @@
 					<el-button class="del_btn" type="danger" :disabled="selRows.length?false:true" @click="delClick(null)"  v-if="btnAuth('caigoudingdan','删除')">
 						删除
 					</el-button>
-					<el-button class="statis_btn" type="warning" @click="echartClick1" v-if="btnAuth('caigoudingdan','采购量统计')">
-						采购量统计
+					<el-button class="statis_btn" type="warning" @click="echartClick1" v-if="btnAuth('caigoudingdan','进货量统计')">
+						进货量统计
 					</el-button>
 				</div>
 			</div>
@@ -84,7 +84,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigoubianhao"
-					label="采购编号">
+					label="进货编号">
 					<template #default="scope">
 						{{scope.row.caigoubianhao}}
 					</template>
@@ -95,7 +95,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinmingcheng"
-					label="商品名称">
+					label="配件名称">
 					<template #default="scope">
 						{{scope.row.shangpinmingcheng}}
 					</template>
@@ -106,7 +106,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinfenlei"
-					label="商品分类">
+					label="配件分类">
 					<template #default="scope">
 						{{scope.row.shangpinfenlei}}
 					</template>
@@ -128,7 +128,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigoushuliang"
-					label="采购数量">
+					label="进货数量">
 					<template #default="scope">
 						{{scope.row.caigoushuliang}}
 					</template>
@@ -150,7 +150,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouzongjia"
-					label="采购总价">
+					label="进货总价">
 					<template #default="scope">
 						{{scope.row.caigouzongjia}}
 					</template>
@@ -183,7 +183,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouriqi"
-					label="采购日期">
+					label="进货日期">
 					<template #default="scope">
 						{{scope.row.caigouriqi}}
 					</template>
@@ -194,7 +194,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouzhanghao"
-					label="采购账号">
+					label="进货账号">
 					<template #default="scope">
 						{{scope.row.caigouzhanghao}}
 					</template>
@@ -205,7 +205,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouxingming"
-					label="采购姓名">
+					label="进货姓名">
 					<template #default="scope">
 						{{scope.row.caigouxingming}}
 					</template>
@@ -256,7 +256,7 @@
 		<formModel ref="formRef" @formModelChange="formModelChange"></formModel>
 		<Approval ref="approvalRef" :tableName="tableName" @shChange="searchClick()"></Approval>
 		<!-- 统计图弹窗 -->
-		<el-dialog v-model="echartVisible" :title="'采购量统计'" width="70%">
+		<el-dialog v-model="echartVisible" :title="'进货量统计'" width="70%">
 			<div  id="caigoushuliangEchart1" style="width:100%;height:600px;"></div>
 
 			<template #footer>
@@ -290,7 +290,7 @@
 	
 	//基础信息
 	const tableName = 'caigoudingdan'
-	const formName = '采购订单'
+	const formName = '进货订单'
 	const route = useRoute()
 	//基础信息
 	onMounted(()=>{
@@ -497,7 +497,7 @@
 				var option = {};
                 option = {
                     title: {
-                        text: '采购量统计',
+                        text: '进货量统计',
                         left: 'center'
                     },
                     tooltip: {

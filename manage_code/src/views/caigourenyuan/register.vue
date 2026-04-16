@@ -4,10 +4,10 @@
 			<el-form :model="registerForm" class="register_form">
 				<div class="title_view">{{projectName}}注册</div>
 				<div class="list_item">
-					<div class="list_label">采购账号：</div>
+					<div class="list_label">进货账号：</div>
 					<el-input class="list_inp"
 						 v-model="registerForm.caigouzhanghao"
-						 placeholder="请输入采购账号"
+						 placeholder="请输入进货账号"
 						 type="text"
 						/>
 				</div>
@@ -24,10 +24,10 @@
 					<el-input class="list_inp" v-model="registerForm.mima2" type="password" placeholder="请输入确认密码" />
 				</div>
 				<div class="list_item">
-					<div class="list_label">采购姓名：</div>
+					<div class="list_label">进货姓名：</div>
 					<el-input class="list_inp"
 						 v-model="registerForm.caigouxingming"
-						 placeholder="请输入采购姓名"
+						 placeholder="请输入进货姓名"
 						 type="text"
 						/>
 				</div>
@@ -104,7 +104,7 @@
 	const handleRegister = () => {
 		let url = tableName.value +"/register";
 		if((!registerForm.value.caigouzhanghao)){
-			context?.$toolUtil.message(`采购账号不能为空`,'error')
+			context?.$toolUtil.message(`进货账号不能为空`,'error')
 			return false
 		}
 		if((!registerForm.value.mima)){
@@ -124,7 +124,7 @@
 			return false
 		}
 		if((!registerForm.value.caigouxingming)){
-			context?.$toolUtil.message(`采购姓名不能为空`,'error')
+			context?.$toolUtil.message(`进货姓名不能为空`,'error')
 			return false
 		}
 		if(registerForm.value.touxiang!=null){

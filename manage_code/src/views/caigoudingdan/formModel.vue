@@ -4,17 +4,17 @@
 			<el-form class="formModel_form" ref="formRef" :model="form" label-width="$template2.back.add.form.base.labelWidth" :rules="rules">
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label="采购编号" prop="caigoubianhao">
-							<el-input class="list_inp" v-model="form.caigoubianhao" :readonly="true" placeholder="采购编号" />
+						<el-form-item label="进货编号" prop="caigoubianhao">
+							<el-input class="list_inp" v-model="form.caigoubianhao" :readonly="true" placeholder="进货编号" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品名称" prop="shangpinmingcheng">
+						<el-form-item label="配件名称" prop="shangpinmingcheng">
 							<el-select
 								class="list_sel"
 								:disabled="!isAdd||disabledForm.shangpinmingcheng?true:false"
 								v-model="form.shangpinmingcheng"
-								placeholder="请选择商品名称"
+								placeholder="请选择配件名称"
 								@change="shangpinmingchengChange">
 								<el-option v-for="(item,index) in shangpinmingchengLists" :label="item" :value="item">
 								</el-option>
@@ -22,8 +22,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
-							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="商品分类"
+						<el-form-item label="配件分类" prop="shangpinfenlei">
+							<el-input class="list_inp" v-model="form.shangpinfenlei" placeholder="配件分类"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinfenlei?true:false" />
 						</el-form-item>
 					</el-col>
@@ -36,8 +36,8 @@
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="采购数量" prop="caigoushuliang">
-							<el-input class="list_inp" v-model.number="form.caigoushuliang" placeholder="采购数量"
+						<el-form-item label="进货数量" prop="caigoushuliang">
+							<el-input class="list_inp" v-model.number="form.caigoushuliang" placeholder="进货数量"
 								 type="text" 								:readonly="!isAdd||disabledForm.caigoushuliang?true:false" />
 						</el-form-item>
 					</el-col>
@@ -50,8 +50,8 @@
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="采购总价" prop="caigouzongjia">
-							<el-input class="list_inp" v-model="caigouzongjia" :readonly="true" placeholder="采购总价" />
+						<el-form-item label="进货总价" prop="caigouzongjia">
+							<el-input class="list_inp" v-model="caigouzongjia" :readonly="true" placeholder="进货总价" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -75,7 +75,7 @@
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="采购日期" prop="caigouriqi">
+						<el-form-item label="进货日期" prop="caigouriqi">
 							<el-date-picker
 								class="list_date"
 								v-model="form.caigouriqi"
@@ -83,19 +83,19 @@
 								value-format="YYYY-MM-DD HH:mm:ss"
 								type="datetime"
 								:readonly="!isAdd||disabledForm.caigouriqi?true:false"
-								placeholder="请选择采购日期" />
+								placeholder="请选择进货日期" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="采购账号" prop="caigouzhanghao">
-							<el-input class="list_inp" v-model="form.caigouzhanghao" placeholder="采购账号"
+						<el-form-item label="进货账号" prop="caigouzhanghao">
+							<el-input class="list_inp" v-model="form.caigouzhanghao" placeholder="进货账号"
 								 type="text" 								:readonly="!isAdd||disabledForm.caigouzhanghao?true:false" />
 						</el-form-item>
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="采购姓名" prop="caigouxingming">
-							<el-input class="list_inp" v-model="form.caigouxingming" placeholder="采购姓名"
+						<el-form-item label="进货姓名" prop="caigouxingming">
+							<el-input class="list_inp" v-model="form.caigouxingming" placeholder="进货姓名"
 								 type="text" 								:readonly="!isAdd||disabledForm.caigouxingming?true:false" />
 						</el-form-item>
 					</el-col>
@@ -127,7 +127,7 @@
 	const emit = defineEmits(['formModelChange'])
 	//基础信息
 	const tableName = 'caigoudingdan'
-	const formName = '采购订单'
+	const formName = '进货订单'
 	//基础信息
 	//form表单
 	const form = ref({})
@@ -260,7 +260,7 @@
 	const formRef = ref(null)
 	const id = ref(0)
 	const type = ref('')
-	//商品名称列表
+	//配件名称列表
 	const shangpinmingchengLists = ref([])
 	//供应商名称列表
 	const gongyingshangmingchengLists = ref([])

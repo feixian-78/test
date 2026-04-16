@@ -4,13 +4,13 @@
 			<el-form class="userinfo_form" ref="userinfoFormRef" :model="form" label-width="$template2.back.add.form.base.labelWidth">
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label="采购账号" prop="caigouzhanghao">
-							<el-input class="list_inp" v-model="user.caigouzhanghao" readonly placeholder="采购账号" clearable />
+						<el-form-item label="进货账号" prop="caigouzhanghao">
+							<el-input class="list_inp" v-model="user.caigouzhanghao" readonly placeholder="进货账号" clearable />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="采购姓名" prop="caigouxingming">
-							<el-input class="list_inp" v-model="user.caigouxingming"  placeholder="采购姓名" clearable />
+						<el-form-item label="进货姓名" prop="caigouxingming">
+							<el-input class="list_inp" v-model="user.caigouxingming"  placeholder="进货姓名" clearable />
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -71,7 +71,7 @@
 	}
 	const onSubmit = () => {
 		if((!user.value.caigouzhanghao)){
-			context?.$toolUtil.message(`采购账号不能为空`,'error')
+			context?.$toolUtil.message(`进货账号不能为空`,'error')
 			return false
 		}
 		if((!user.value.mima)){
@@ -79,7 +79,7 @@
 			return false
 		}
 		if((!user.value.caigouxingming)){
-			context?.$toolUtil.message(`采购姓名不能为空`,'error')
+			context?.$toolUtil.message(`进货姓名不能为空`,'error')
 			return false
 		}
 		if(user.value.touxiang!=null){

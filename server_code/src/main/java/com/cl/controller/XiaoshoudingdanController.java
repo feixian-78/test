@@ -14,6 +14,8 @@ import com.cl.service.*;
 import com.cl.utils.ValidatorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,7 @@ import com.cl.utils.EncryptUtil;
 import com.cl.utils.MPUtil;
 import com.cl.utils.MapUtils;
 import com.cl.utils.CommonUtil;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 销售订单
@@ -47,6 +50,9 @@ import com.cl.utils.CommonUtil;
 @RestController
 @RequestMapping("/xiaoshoudingdan")
 public class XiaoshoudingdanController {
+    private static final String HOT_PRODUCT_CACHE_PREFIX = "stats:xiaoshoudingdan:value:";
+    private static final long HOT_PRODUCT_CACHE_TTL_MINUTES = 10L;
+
     @Autowired
     private XiaoshoudingdanService xiaoshoudingdanService;
 
@@ -59,6 +65,9 @@ public class XiaoshoudingdanController {
 
     @Autowired
     private ShangpinxinxiService shangpinxinxiService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
 
 
@@ -161,6 +170,7 @@ public class XiaoshoudingdanController {
     public R save(@RequestBody XiaoshoudingdanEntity xiaoshoudingdan, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(xiaoshoudingdan);
         xiaoshoudingdanService.save(xiaoshoudingdan);
+        clearHotProductCache();
         return R.ok();
     }
     
@@ -171,6 +181,7 @@ public class XiaoshoudingdanController {
     public R add(@RequestBody XiaoshoudingdanEntity xiaoshoudingdan, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(xiaoshoudingdan);
         xiaoshoudingdanService.save(xiaoshoudingdan);
+        clearHotProductCache();
         return R.ok();
     }
 
@@ -230,6 +241,9 @@ public class XiaoshoudingdanController {
             QueryWrapper<ShangpinxinxiEntity> spWrapper = new QueryWrapper<>();
             spWrapper.eq("shangpinmingcheng", xiaoshoudingdan.getShangpinmingcheng());
             ShangpinxinxiEntity shangpinxinxi = shangpinxinxiService.getOne(spWrapper);
+            if(shangpinxinxi != null) {
+                chukuxinxi.setCunfanghuowei(shangpinxinxi.getCunfanghuowei());
+            }
 
             if(shangpinxinxi != null) {
                 // 减少库存数量
@@ -242,8 +256,10 @@ public class XiaoshoudingdanController {
                 // 更新商品信息
                 shangpinxinxiService.updateById(shangpinxinxi);
             }
+            chukuxinxiService.updateById(chukuxinxi);
         }
 
+        clearHotProductCache();
         return R.ok();
     }
 
@@ -263,6 +279,8 @@ public class XiaoshoudingdanController {
             list.add(xiaoshoudingdan);
         }
         xiaoshoudingdanService.updateBatchById(list);
+        clearHotProductCache();
+        clearHotProductCache();
         return R.ok();
     }
 
@@ -275,6 +293,7 @@ public class XiaoshoudingdanController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids){
         xiaoshoudingdanService.removeBatchByIds(Arrays.asList(ids));
+        clearHotProductCache();
         return R.ok();
     }
     
@@ -289,6 +308,15 @@ public class XiaoshoudingdanController {
      */
     @RequestMapping("/value/{xColumnName}/{yColumnName}")
     public R value(@PathVariable("yColumnName") String yColumnName, @PathVariable("xColumnName") String xColumnName,HttpServletRequest request) {
+        String cacheKey = buildValueCacheKey(xColumnName, yColumnName, request);
+        if(cacheKey != null) {
+            ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+            Object cachedData = valueOperations.get(cacheKey);
+            if(cachedData instanceof List) {
+                return R.ok().put("data", cachedData);
+            }
+        }
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("xColumn", MPUtil.camelToSnake(xColumnName));
         params.put("yColumn", MPUtil.camelToSnake(yColumnName));
@@ -305,6 +333,9 @@ public class XiaoshoudingdanController {
                     m.put(k, sdf.format((Date)m.get(k)));
                 }
             }
+        }
+        if(cacheKey != null) {
+            redisTemplate.opsForValue().set(cacheKey, result, HOT_PRODUCT_CACHE_TTL_MINUTES, TimeUnit.MINUTES);
         }
         return R.ok().put("data", result);
     }
@@ -435,6 +466,26 @@ public class XiaoshoudingdanController {
         QueryWrapper<XiaoshoudingdanEntity> ew = new QueryWrapper<XiaoshoudingdanEntity>();
         int count = (int) xiaoshoudingdanService.count(MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, xiaoshoudingdan), params), params));
         return R.ok().put("data", count);
+    }
+
+    private String buildValueCacheKey(String xColumnName, String yColumnName, HttpServletRequest request) {
+        if(!"shangpinmingcheng".equals(xColumnName) || !"shuliang".equals(yColumnName)) {
+            return null;
+        }
+        Object tableName = request.getSession().getAttribute("tableName");
+        Object username = request.getSession().getAttribute("username");
+        String userScope = "all";
+        if("xiaoshourenyuan".equals(tableName) && username != null) {
+            userScope = "xiaoshourenyuan:" + username;
+        }
+        return HOT_PRODUCT_CACHE_PREFIX + xColumnName + ":" + yColumnName + ":" + userScope;
+    }
+
+    private void clearHotProductCache() {
+        Set<String> keys = redisTemplate.keys(HOT_PRODUCT_CACHE_PREFIX + "*");
+        if(keys != null && !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
     }
 
 

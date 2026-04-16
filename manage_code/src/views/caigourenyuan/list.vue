@@ -5,10 +5,10 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							采购账号：
+							进货账号：
 						</div>
 						<div class="search_box">
-							<el-input class="search_inp" v-model="searchQuery.caigouzhanghao" placeholder="采购账号"
+							<el-input class="search_inp" v-model="searchQuery.caigouzhanghao" placeholder="进货账号"
 								clearable>
 							</el-input>
 						</div>
@@ -68,7 +68,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouzhanghao"
-					label="采购账号">
+					label="进货账号">
 					<template #default="scope">
 						{{scope.row.caigouzhanghao}}
 					</template>
@@ -79,7 +79,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="caigouxingming"
-					label="采购姓名">
+					label="进货姓名">
 					<template #default="scope">
 						{{scope.row.caigouxingming}}
 					</template>
@@ -189,7 +189,7 @@
 	
 	//基础信息
 	const tableName = 'caigourenyuan'
-	const formName = '采购人员'
+	const formName = '进货人员'
 	const route = useRoute()
 	//基础信息
 	onMounted(()=>{

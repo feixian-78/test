@@ -9,7 +9,7 @@ const config = {
     },
     getProjectName(){
         return {
-            projectName: "企业进销存管理系统"
+            projectName: "七彩虹电脑配件仓储系统"
         } 
     }
 }

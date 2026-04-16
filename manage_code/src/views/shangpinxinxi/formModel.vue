@@ -4,24 +4,24 @@
 			<el-form class="formModel_form" ref="formRef" :model="form" label-width="$template2.back.add.form.base.labelWidth" :rules="rules">
 				<el-row>
 					<el-col :span="12">
-						<el-form-item label="商品编号" prop="shangpinbianhao">
-							<el-input class="list_inp" v-model="form.shangpinbianhao" :readonly="true" placeholder="商品编号" />
+						<el-form-item label="配件编号" prop="shangpinbianhao">
+							<el-input class="list_inp" v-model="form.shangpinbianhao" :readonly="true" placeholder="配件编号" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="商品名称" prop="shangpinmingcheng">
-							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="商品名称"
+						<el-form-item label="配件名称" prop="shangpinmingcheng">
+							<el-input class="list_inp" v-model="form.shangpinmingcheng" placeholder="配件名称"
 								 type="text" 								:readonly="!isAdd||disabledForm.shangpinmingcheng?true:false" />
 						</el-form-item>
 					</el-col>
 
 					<el-col :span="12">
-						<el-form-item label="商品分类" prop="shangpinfenlei">
+						<el-form-item label="配件分类" prop="shangpinfenlei">
 							<el-select
 								class="list_sel"
 								:disabled="!isAdd||disabledForm.shangpinfenlei?true:false"
 								v-model="form.shangpinfenlei"
-								placeholder="请选择商品分类"
+								placeholder="请选择配件分类"
 								>
 								<el-option v-for="(item,index) in shangpinfenleiLists" :label="item"
 									:value="item"
@@ -49,6 +49,18 @@
 						<el-form-item label="规格" prop="guige">
 							<el-input class="list_inp" v-model="form.guige" placeholder="规格"
 								 type="text" 								:readonly="!isAdd||disabledForm.guige?true:false" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="生产批次号" prop="shengchanpicihao">
+							<el-input class="list_inp" v-model="form.shengchanpicihao" placeholder="生产批次号"
+								 type="text" 								:readonly="!isAdd||disabledForm.shengchanpicihao?true:false" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="存放货位" prop="cunfanghuowei">
+							<el-input class="list_inp" v-model="form.cunfanghuowei" placeholder="存放货位"
+								 type="text" 								:readonly="!isAdd||disabledForm.cunfanghuowei?true:false" />
 						</el-form-item>
 					</el-col>
 
@@ -83,8 +95,8 @@
 					</el-col>
 
 					<el-col :span="24">
-						<el-form-item label="商品详情" prop="shangpinxiangqing">
-							<editor :value="form.shangpinxiangqing" placeholder="请输入商品详情" :readonly="!isAdd||disabledForm.shangpinxiangqing?true:false"
+						<el-form-item label="配件详情" prop="shangpinxiangqing">
+							<editor :value="form.shangpinxiangqing" placeholder="请输入配件详情" :readonly="!isAdd||disabledForm.shangpinxiangqing?true:false"
 								class="list_editor" @change="(e)=>editorChange(e,'shangpinxiangqing')"></editor>
 						</el-form-item>
 					</el-col>
@@ -115,7 +127,7 @@
 	const emit = defineEmits(['formModelChange'])
 	//基础信息
 	const tableName = 'shangpinxinxi'
-	const formName = '商品信息'
+	const formName = '配件信息'
 	//基础信息
 	//form表单
 	const form = ref({})
@@ -125,6 +137,8 @@
 		shangpinfenlei : false,
 		cangku : false,
 		guige : false,
+		shengchanpicihao : false,
+		cunfanghuowei : false,
 		tupian : false,
 		jiage : false,
 		shuliang : false,
@@ -215,6 +229,10 @@
 		],
 		guige: [
 		],
+		shengchanpicihao: [
+		],
+		cunfanghuowei: [
+		],
 		tupian: [
 		],
 		jiage: [
@@ -231,7 +249,7 @@
 	const formRef = ref(null)
 	const id = ref(0)
 	const type = ref('')
-	//商品分类列表
+	//配件分类列表
 	const shangpinfenleiLists = ref([])
 	//仓库列表
 	const cangkuLists = ref([])
@@ -259,6 +277,8 @@
 			shangpinfenlei: '',
 			cangku: '',
 			guige: '',
+			shengchanpicihao: '',
+			cunfanghuowei: '',
 			tupian: '',
 			jiage: '',
 			shuliang: '',
@@ -330,6 +350,11 @@
 				if(x=='guige'){
 					form.value.guige = row[x];
 					disabledForm.value.guige = true;
+					continue;
+				}
+				if(x=='cunfanghuowei'){
+					form.value.cunfanghuowei = row[x];
+					disabledForm.value.cunfanghuowei = true;
 					continue;
 				}
 				if(x=='tupian'){

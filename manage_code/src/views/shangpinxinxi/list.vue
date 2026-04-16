@@ -5,14 +5,14 @@
 				<el-form :model="searchQuery" class="search_form" >
 					<div class="search_view">
 						<div class="search_label">
-							商品分类：
+							配件分类：
 						</div>
 						<div class="search_box">
 							<el-select
 								class="search_sel"
 								clearable
 								v-model="searchQuery.shangpinfenlei"
-								placeholder="商品分类"
+								placeholder="配件分类"
 								>
 								<el-option v-for="item in shangpinfenleiLists" :label="item" :value="item"></el-option>
 							</el-select>
@@ -46,6 +46,7 @@
 				v-loading="listLoading"
 				border 
 				:stripe='true'
+				:row-class-name="tableRowClassName"
 				@selection-change="handleSelectionChange" 
 				ref="table"
 				v-if="btnAuth('shangpinxinxi','查看')"
@@ -61,7 +62,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinbianhao"
-					label="商品编号">
+					label="配件编号">
 					<template #default="scope">
 						{{scope.row.shangpinbianhao}}
 					</template>
@@ -72,7 +73,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinmingcheng"
-					label="商品名称">
+					label="配件名称">
 					<template #default="scope">
 						{{scope.row.shangpinmingcheng}}
 					</template>
@@ -83,7 +84,7 @@
 					 align="left" 
 					 header-align="left"
 					 prop="shangpinfenlei"
-					label="商品分类">
+					label="配件分类">
 					<template #default="scope">
 						{{scope.row.shangpinfenlei}}
 					</template>
@@ -108,6 +109,17 @@
 					label="规格">
 					<template #default="scope">
 						{{scope.row.guige}}
+					</template>
+				</el-table-column>
+				<el-table-column
+					 :resizable='true' 
+					 :sortable='true' 
+					 align="left" 
+					 header-align="left"
+					 prop="shengchanpicihao"
+					label="生产批次号">
+					<template #default="scope">
+						{{scope.row.shengchanpicihao}}
 					</template>
 				</el-table-column>
 				<el-table-column label="图片" width="120" :resizable='true' :sortable='true' align="left" header-align="left">
@@ -143,7 +155,8 @@
 					 prop="shuliang"
 					label="数量">
 					<template #default="scope">
-						{{scope.row.shuliang}}
+						<span>{{scope.row.shuliang}}</span>
+						<span v-if="Number(scope.row.shuliang) < 10" class="">⚠️</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" width="300" :resizable='true' :sortable='true' align="left" header-align="left">
@@ -216,7 +229,7 @@
 	
 	//基础信息
 	const tableName = 'shangpinxinxi'
-	const formName = '商品信息'
+	const formName = '配件信息'
 	const route = useRoute()
 	//基础信息
 	onMounted(()=>{
@@ -238,6 +251,9 @@
 			//table.value.clearSelection()
 			table.value.toggleRowSelection(row)
 		})
+	}
+	const tableRowClassName = (params) =>{
+		return Number(params.row.shuliang) < 10 ? 'warning_row' : ''
 	}
 	//列表
 	const getList = () => {
@@ -704,6 +720,25 @@
 		border-color: #d2d2d2;
 		border-width: 1px 0 0 1px;
 		border-style: solid;
+		:deep(.warning_row) {
+			td {
+				color: #d9001b !important;
+			}
+			.cell {
+				color: #d9001b !important;
+			}
+		}
+		.warning_badge {
+			display: inline-block;
+			margin-left: 8px;
+			padding: 0 6px;
+			border-radius: 10px;
+			color: #fff;
+			background: #d9001b;
+			font-size: 12px;
+			line-height: 20px;
+			vertical-align: middle;
+		}
 		:deep(.el-table__header-wrapper) {
 			thead {
 				color: #999;
