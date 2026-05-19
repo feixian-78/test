@@ -13,10 +13,6 @@ import com.cl.entity.view.UsersView;
 
 /**
  * 管理员
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface UsersDao extends BaseMapper<UsersEntity> {
 	

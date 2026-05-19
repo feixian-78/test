@@ -37,10 +37,6 @@ import com.cl.utils.CommonUtil;
 
 /**
  * 客户
- * 后端接口
- * @author 
- * @email 
- * @date 2025-02-19 14:42:18
  */
 @RestController
 @RequestMapping("/kehu")

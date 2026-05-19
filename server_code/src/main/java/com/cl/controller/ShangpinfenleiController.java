@@ -38,21 +38,12 @@ import com.cl.utils.CommonUtil;
 /**
  * 商品分类
  * 后端接口
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @RestController
 @RequestMapping("/shangpinfenlei")
 public class ShangpinfenleiController {
     @Autowired
     private ShangpinfenleiService shangpinfenleiService;
-
-
-
-
-
-
 
     /**
      * 后台列表
@@ -68,11 +59,7 @@ public class ShangpinfenleiController {
         return R.ok().put("data", page);
     }
     
-    
-    
-    
-    
-    
+
     
     /**
      * 前端列表

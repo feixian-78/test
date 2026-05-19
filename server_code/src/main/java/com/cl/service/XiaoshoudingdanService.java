@@ -12,10 +12,6 @@ import com.cl.entity.view.XiaoshoudingdanView;
 
 /**
  * 销售订单
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface XiaoshoudingdanService extends IService<XiaoshoudingdanEntity> {
 

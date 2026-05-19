@@ -12,10 +12,6 @@ import com.cl.entity.view.XiaoshourenyuanView;
 
 /**
  * 销售人员
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface XiaoshourenyuanService extends IService<XiaoshourenyuanEntity> {
 

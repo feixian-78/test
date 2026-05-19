@@ -77,17 +77,20 @@
 		ruleFormRef.value.validate((valid) => {
 			if (valid) {
 				let url = `${tableName.value}/update`
-				context?.$http({
-					url: url,
-					method: 'post',
-					data: approvalForm.value
-				}).then(res => {
-
-					context?.$toolUtil.message('审核成功', 'success', obj => {
-						approvalVisible.value = false
-					})
-					emit('shChange',type,approvalForm.value)
-				})
+        context?.$http({
+          url: url,
+          method: 'post',
+          data: approvalForm.value
+        }).then(res => {
+          if (res.data && res.data.code === 0) {
+            context?.$toolUtil.message('审核成功', 'success', () => {
+              approvalVisible.value = false
+            })
+            emit('shChange', type, approvalForm.value)
+          } else {
+            context?.$toolUtil.message(res.data.msg || '审核失败', 'error')
+          }
+        })
 			}
 		})
 	}

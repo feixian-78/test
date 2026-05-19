@@ -37,10 +37,6 @@ import com.cl.utils.CommonUtil;
 
 /**
  * 出库信息
- * 后端接口
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @RestController
 @RequestMapping("/chukuxinxi")

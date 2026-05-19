@@ -13,11 +13,7 @@ import com.cl.utils.EncryptUtil;
 
 /**
  * 出库信息
- * 后端返回视图实体辅助类   
- * （通常后端关联的表或者自定义的字段需要返回使用）
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
+ * 后端返回视图实体辅助类
  */
 @TableName("chukuxinxi")
 public class ChukuxinxiView  extends ChukuxinxiEntity implements Serializable {

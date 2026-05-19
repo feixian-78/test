@@ -13,10 +13,6 @@ import com.cl.entity.view.CaigourenyuanView;
 
 /**
  * 采购人员
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface CaigourenyuanDao extends BaseMapper<CaigourenyuanEntity> {
 	

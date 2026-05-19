@@ -40,9 +40,6 @@ import com.cl.utils.CommonUtil;
 /**
  * 采购订单
  * 后端接口
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @RestController
 @RequestMapping("/caigoudingdan")
@@ -182,70 +179,68 @@ public class CaigoudingdanController {
     @RequestMapping("/update")
     @Transactional
     public R update(@RequestBody CaigoudingdanEntity caigoudingdan, HttpServletRequest request){
-        //ValidatorUtils.validateEntity(caigoudingdan);
-
-        // 获取原始记录以检查审核状态变化
+        // 1. 查询原采购订单
         CaigoudingdanEntity original = caigoudingdanService.getById(caigoudingdan.getId());
+        if(original == null) {
+            return R.error("采购订单不存在");
+        }
 
-        // 更新记录
+        // 2. 判断该采购订单是否已经生成入库记录
+        QueryWrapper<ShangpinrukuEntity> checkWrapper = new QueryWrapper<>();
+        checkWrapper.eq("dingdanbianhao", original.getCaigoubianhao());
+        int existed = (int) shangpinrukuService.count(checkWrapper);
+
+        // 只要已经入库，就不允许再通过或拒绝
+        if(existed > 0) {
+            return R.error("该采购订单已入库，不能重复审核");
+        }
+
+        // 3. 如果审核结果不是“是”，只更新审核状态和回复，不生成入库记录，不改库存
+        if(!"是".equals(caigoudingdan.getSfsh())) {
+            caigoudingdanService.updateById(caigoudingdan);
+            return R.ok();
+        }
+
+        // 4. 审核通过：先更新采购订单状态
         caigoudingdanService.updateById(caigoudingdan);
 
-        // 检查是否是从未审核变为已审核状态
-        if(original != null && !"是".equals(original.getSfsh()) && "是".equals(caigoudingdan.getSfsh())) {
-            // 检查是否已存在对应的入库记录
-            QueryWrapper<ShangpinrukuEntity> wrapper = new QueryWrapper<>();
-            wrapper.eq("dingdanbianhao", caigoudingdan.getCaigoubianhao());
-            int count = (int) shangpinrukuService.count(wrapper);
+        // 5. 创建商品入库记录
+        ShangpinrukuEntity shangpinruku = new ShangpinrukuEntity();
+        shangpinruku.setDingdanbianhao(caigoudingdan.getCaigoubianhao());
+        shangpinruku.setShangpinmingcheng(caigoudingdan.getShangpinmingcheng());
+        shangpinruku.setShangpinfenlei(caigoudingdan.getShangpinfenlei());
+        shangpinruku.setGuige(caigoudingdan.getGuige());
+        shangpinruku.setShuliang(caigoudingdan.getCaigoushuliang());
+        shangpinruku.setGongyingshangmingcheng(caigoudingdan.getGongyingshangmingcheng());
+        shangpinruku.setShoujihaoma(caigoudingdan.getShoujihaoma());
+        shangpinruku.setRukuriqi(new Date());
 
-            if(count > 0) {
-                // 已存在入库记录，返回错误消息
-                return R.error("该采购订单已入库，不能重复入库");
+        // 6. 保存仓管员信息
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        if(userId != null) {
+            CangguanyuanEntity cangguanyuan = cangguanyuanService.getById(userId);
+            if(cangguanyuan != null) {
+                shangpinruku.setCangguanyuanzhanghao(cangguanyuan.getCangguanyuanzhanghao());
+                shangpinruku.setCangguanyuanxingming(cangguanyuan.getCangguanyuanxingming());
             }
+        }
 
-            // 创建入库记录
-            ShangpinrukuEntity shangpinruku = new ShangpinrukuEntity();
-            shangpinruku.setDingdanbianhao(caigoudingdan.getCaigoubianhao());
-            shangpinruku.setShangpinmingcheng(caigoudingdan.getShangpinmingcheng());
-            shangpinruku.setShangpinfenlei(caigoudingdan.getShangpinfenlei());
-            shangpinruku.setGuige(caigoudingdan.getGuige());
-            shangpinruku.setShuliang(caigoudingdan.getCaigoushuliang());
-            shangpinruku.setGongyingshangmingcheng(caigoudingdan.getGongyingshangmingcheng());
-            shangpinruku.setShoujihaoma(caigoudingdan.getShoujihaoma());
-            shangpinruku.setRukuriqi(new Date());
+        shangpinrukuService.save(shangpinruku);
 
-            // 获取仓管员信息
-            Long userId = (Long) request.getSession().getAttribute("userId");
-            if(userId != null) {
-                CangguanyuanEntity cangguanyuan = cangguanyuanService.getById(userId);
-                if(cangguanyuan != null) {
-                    shangpinruku.setCangguanyuanzhanghao(cangguanyuan.getCangguanyuanzhanghao());
-                    shangpinruku.setCangguanyuanxingming(cangguanyuan.getCangguanyuanxingming());
-                }
-            }
+        // 7. 同步增加商品库存
+        QueryWrapper<ShangpinxinxiEntity> spWrapper = new QueryWrapper<>();
+        spWrapper.eq("shangpinmingcheng", caigoudingdan.getShangpinmingcheng());
+        ShangpinxinxiEntity shangpinxinxi = shangpinxinxiService.getOne(spWrapper);
 
-            // 保存入库记录
-            shangpinrukuService.save(shangpinruku);
-
-            // 同步更新商品信息中的库存数量
-            QueryWrapper<ShangpinxinxiEntity> spWrapper = new QueryWrapper<>();
-            spWrapper.eq("shangpinmingcheng", caigoudingdan.getShangpinmingcheng());
-            ShangpinxinxiEntity shangpinxinxi = shangpinxinxiService.getOne(spWrapper);
-
-            if(shangpinxinxi != null) {
-                // 累加库存数量
-                Integer currentKucun = shangpinxinxi.getShuliang() != null ? shangpinxinxi.getShuliang() : 0;
-                Integer rukuShuliang = caigoudingdan.getCaigoushuliang() != null ? caigoudingdan.getCaigoushuliang() : 0;
-                shangpinxinxi.setShuliang(currentKucun + rukuShuliang);
-
-                // 更新商品信息
-                shangpinxinxiService.updateById(shangpinxinxi);
-            }
+        if(shangpinxinxi != null) {
+            Integer currentKucun = shangpinxinxi.getShuliang() != null ? shangpinxinxi.getShuliang() : 0;
+            Integer rukuShuliang = caigoudingdan.getCaigoushuliang() != null ? caigoudingdan.getCaigoushuliang() : 0;
+            shangpinxinxi.setShuliang(currentKucun + rukuShuliang);
+            shangpinxinxiService.updateById(shangpinxinxi);
         }
 
         return R.ok();
     }
-
-
 
 
     /**

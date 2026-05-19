@@ -24,9 +24,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 /**
  * 管理员
  * 数据库通用操作实体类（普通增删改查）
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @TableName("users")
 public class UsersEntity<T> implements Serializable {

@@ -13,11 +13,6 @@ import com.cl.utils.EncryptUtil;
 
 /**
  * 销售人员
- * 后端返回视图实体辅助类   
- * （通常后端关联的表或者自定义的字段需要返回使用）
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @TableName("xiaoshourenyuan")
 public class XiaoshourenyuanView  extends XiaoshourenyuanEntity implements Serializable {

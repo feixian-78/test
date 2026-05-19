@@ -13,11 +13,6 @@ import com.cl.utils.EncryptUtil;
 
 /**
  * 商品入库
- * 后端返回视图实体辅助类   
- * （通常后端关联的表或者自定义的字段需要返回使用）
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @TableName("shangpinruku")
 public class ShangpinrukuView  extends ShangpinrukuEntity implements Serializable {

@@ -13,10 +13,6 @@ import com.cl.entity.view.CangguanyuanView;
 
 /**
  * 仓管员
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface CangguanyuanDao extends BaseMapper<CangguanyuanEntity> {
 	

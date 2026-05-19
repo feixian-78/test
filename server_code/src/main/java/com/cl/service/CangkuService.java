@@ -12,10 +12,6 @@ import com.cl.entity.view.CangkuView;
 
 /**
  * 仓库
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface CangkuService extends IService<CangkuEntity> {
 

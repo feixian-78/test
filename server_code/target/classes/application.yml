@@ -20,10 +20,6 @@ spring:
         database: 0
         timeout: 5s
 
-#        driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#        url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=cl08898320
-#        username: sa
-#        password: 123456
 
     servlet:
       multipart:
@@ -33,7 +29,7 @@ spring:
       resources:
         static-locations:
           - "classpath:/static/"
-          - "file:static/"  # 或者使用绝对路径，如 "file:/path/to/static/"
+          - "file:static/"
 
 #mybatis
 mybatis-plus:

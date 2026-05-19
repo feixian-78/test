@@ -12,10 +12,6 @@ import com.cl.entity.view.ShangpinxinxiView;
 
 /**
  * 商品信息
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface ShangpinxinxiService extends IService<ShangpinxinxiEntity> {
 

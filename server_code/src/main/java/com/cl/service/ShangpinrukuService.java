@@ -12,10 +12,6 @@ import com.cl.entity.view.ShangpinrukuView;
 
 /**
  * 商品入库
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface ShangpinrukuService extends IService<ShangpinrukuEntity> {
 

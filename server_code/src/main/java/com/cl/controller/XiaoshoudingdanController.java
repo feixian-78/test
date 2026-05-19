@@ -42,10 +42,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 销售订单
- * 后端接口
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 @RestController
 @RequestMapping("/xiaoshoudingdan")
@@ -193,77 +189,76 @@ public class XiaoshoudingdanController {
     @RequestMapping("/update")
     @Transactional
     public R update(@RequestBody XiaoshoudingdanEntity xiaoshoudingdan, HttpServletRequest request){
-        //ValidatorUtils.validateEntity(xiaoshoudingdan);
-
-        // 获取原始记录以检查审核状态变化
+        // 1. 查询原销售订单
         XiaoshoudingdanEntity original = xiaoshoudingdanService.getById(xiaoshoudingdan.getId());
-
-        // 更新记录
-        xiaoshoudingdanService.updateById(xiaoshoudingdan);
-
-        // 检查是否是从未审核变为已审核状态
-        if(original != null && !"是".equals(original.getSfsh()) && "是".equals(xiaoshoudingdan.getSfsh())) {
-            // 检查是否已存在对应的出库记录
-            QueryWrapper<ChukuxinxiEntity> wrapper = new QueryWrapper<>();
-            wrapper.eq("dingdanbianhao", xiaoshoudingdan.getXiaoshoudingdan());
-            int count = (int) chukuxinxiService.count(wrapper);
-
-            if(count > 0) {
-                // 已存在出库记录，返回错误消息
-                return R.error("该销售订单已出库，不能重复出库");
-            }
-
-            // 创建出库记录
-            ChukuxinxiEntity chukuxinxi = new ChukuxinxiEntity();
-            chukuxinxi.setDingdanbianhao(xiaoshoudingdan.getXiaoshoudingdan());
-            chukuxinxi.setShangpinmingcheng(xiaoshoudingdan.getShangpinmingcheng());
-            chukuxinxi.setShangpinfenlei(xiaoshoudingdan.getShangpinfenlei());
-            chukuxinxi.setGuige(xiaoshoudingdan.getGuige());
-            chukuxinxi.setShuliang(xiaoshoudingdan.getShuliang());
-            chukuxinxi.setKehumingcheng(xiaoshoudingdan.getKehumingcheng());
-            chukuxinxi.setShoujihaoma(xiaoshoudingdan.getShoujihaoma());
-            chukuxinxi.setChukuriqi(new Date());
-
-            // 获取仓管员信息
-            Long userId = (Long) request.getSession().getAttribute("userId");
-            if(userId != null) {
-                CangguanyuanEntity cangguanyuan = cangguanyuanService.getById(userId);
-                if(cangguanyuan != null) {
-                    chukuxinxi.setCangguanyuanzhanghao(cangguanyuan.getCangguanyuanzhanghao());
-                    chukuxinxi.setCangguanyuanxingming(cangguanyuan.getCangguanyuanxingming());
-                }
-            }
-
-            // 保存出库记录
-            chukuxinxiService.save(chukuxinxi);
-
-            // 同步更新商品信息中的库存数量（减少库存）
-            QueryWrapper<ShangpinxinxiEntity> spWrapper = new QueryWrapper<>();
-            spWrapper.eq("shangpinmingcheng", xiaoshoudingdan.getShangpinmingcheng());
-            ShangpinxinxiEntity shangpinxinxi = shangpinxinxiService.getOne(spWrapper);
-            if(shangpinxinxi != null) {
-                chukuxinxi.setCunfanghuowei(shangpinxinxi.getCunfanghuowei());
-            }
-
-            if(shangpinxinxi != null) {
-                // 减少库存数量
-                Integer currentKucun = shangpinxinxi.getShuliang() != null ? shangpinxinxi.getShuliang() : 0;
-                Integer chukuShuliang = xiaoshoudingdan.getShuliang() != null ? xiaoshoudingdan.getShuliang() : 0;
-                // 确保库存不会变成负数
-                int newKucun = Math.max(0, currentKucun - chukuShuliang);
-                shangpinxinxi.setShuliang(newKucun);
-
-                // 更新商品信息
-                shangpinxinxiService.updateById(shangpinxinxi);
-            }
-            chukuxinxiService.updateById(chukuxinxi);
+        if(original == null) {
+            return R.error("销售订单不存在");
         }
 
-        clearHotProductCache();
+        // 2. 判断该销售订单是否已经生成出库记录
+        QueryWrapper<ChukuxinxiEntity> checkWrapper = new QueryWrapper<>();
+        checkWrapper.eq("dingdanbianhao", original.getXiaoshoudingdan());
+        int existed = (int) chukuxinxiService.count(checkWrapper);
+
+        // 只要已经出库，就不允许再通过或拒绝
+        if(existed > 0) {
+            return R.error("该销售订单已出库，不能重复审核");
+        }
+
+        // 3. 如果审核结果不是“是”，只更新审核状态和回复，不生成出库记录，不改库存
+        if(!"是".equals(xiaoshoudingdan.getSfsh())) {
+            xiaoshoudingdanService.updateById(xiaoshoudingdan);
+            return R.ok();
+        }
+
+        // 4. 审核通过前，先检查库存是否足够
+        QueryWrapper<ShangpinxinxiEntity> spWrapper = new QueryWrapper<>();
+        spWrapper.eq("shangpinmingcheng", xiaoshoudingdan.getShangpinmingcheng());
+        ShangpinxinxiEntity shangpinxinxi = shangpinxinxiService.getOne(spWrapper);
+
+        if(shangpinxinxi == null) {
+            return R.error("商品信息不存在，不能出库");
+        }
+
+        Integer currentKucun = shangpinxinxi.getShuliang() != null ? shangpinxinxi.getShuliang() : 0;
+        Integer chukuShuliang = xiaoshoudingdan.getShuliang() != null ? xiaoshoudingdan.getShuliang() : 0;
+
+        if(currentKucun < chukuShuliang) {
+            return R.error("库存不足，不能出库");
+        }
+
+        // 5. 更新销售订单审核状态
+        xiaoshoudingdanService.updateById(xiaoshoudingdan);
+
+        // 6. 创建出库记录
+        ChukuxinxiEntity chukuxinxi = new ChukuxinxiEntity();
+        chukuxinxi.setDingdanbianhao(xiaoshoudingdan.getXiaoshoudingdan());
+        chukuxinxi.setShangpinmingcheng(xiaoshoudingdan.getShangpinmingcheng());
+        chukuxinxi.setShangpinfenlei(xiaoshoudingdan.getShangpinfenlei());
+        chukuxinxi.setGuige(xiaoshoudingdan.getGuige());
+        chukuxinxi.setShuliang(xiaoshoudingdan.getShuliang());
+        chukuxinxi.setKehumingcheng(xiaoshoudingdan.getKehumingcheng());
+        chukuxinxi.setShoujihaoma(xiaoshoudingdan.getShoujihaoma());
+        chukuxinxi.setChukuriqi(new Date());
+
+        // 7. 保存仓管员信息
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        if(userId != null) {
+            CangguanyuanEntity cangguanyuan = cangguanyuanService.getById(userId);
+            if(cangguanyuan != null) {
+                chukuxinxi.setCangguanyuanzhanghao(cangguanyuan.getCangguanyuanzhanghao());
+                chukuxinxi.setCangguanyuanxingming(cangguanyuan.getCangguanyuanxingming());
+            }
+        }
+
+        chukuxinxiService.save(chukuxinxi);
+
+        // 8. 同步扣减商品库存
+        shangpinxinxi.setShuliang(currentKucun - chukuShuliang);
+        shangpinxinxiService.updateById(shangpinxinxi);
+
         return R.ok();
     }
-
-
 
     /**
      * 审核

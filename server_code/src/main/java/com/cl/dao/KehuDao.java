@@ -13,10 +13,6 @@ import com.cl.entity.view.KehuView;
 
 /**
  * 客户
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:18
  */
 public interface KehuDao extends BaseMapper<KehuEntity> {
 	

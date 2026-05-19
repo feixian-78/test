@@ -13,10 +13,6 @@ import com.cl.entity.view.CaigoudingdanView;
 
 /**
  * 采购订单
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface CaigoudingdanDao extends BaseMapper<CaigoudingdanEntity> {
 	

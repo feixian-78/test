@@ -12,10 +12,6 @@ import com.cl.entity.view.ShangpinfenleiView;
 
 /**
  * 商品分类
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface ShangpinfenleiService extends IService<ShangpinfenleiEntity> {
 

@@ -12,10 +12,6 @@ import com.cl.entity.view.ChukuxinxiView;
 
 /**
  * 出库信息
- *
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface ChukuxinxiService extends IService<ChukuxinxiEntity> {
 

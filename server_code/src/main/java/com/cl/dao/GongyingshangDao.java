@@ -13,10 +13,6 @@ import com.cl.entity.view.GongyingshangView;
 
 /**
  * 供应商
- * 
- * @author 
- * @email 
- * @date 2025-02-19 14:42:17
  */
 public interface GongyingshangDao extends BaseMapper<GongyingshangEntity> {
 	
